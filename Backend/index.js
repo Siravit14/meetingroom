@@ -61,15 +61,16 @@ app.get('/api/booking',(req,res)=>{
     })
 })
 
-app.delete('/api/booking',(req,res)=>{
-    const id = parseInt(req.params.id)
-    const initialLenght = bookings.length;
-    bookings = bookings.filter(b => b !== id);
-    if (bookings.length<initialLenght){
-        res.json({message:`ยกเลิกการจองหมายเลข ${id} สำเร็จแล้ว`})
-    } else{
-        res.status(404).json({message:"ไม่พบหมายเลขการจองนี้"})
-    }
+app.delete('/api/booking/:id',(req,res)=>{
+    const bookingId = req.params.id;
+    const sql ='DELETE FROM bookings WHERE id = ?'
+    db.query(sql,[bookingId], (err, result) =>{
+        if (err) return res.status(500).json({ error: err.message})
+        if (result.affectedRows === 0){
+            return res.status(404).json({ message:"ไม่พบข้อมูลการจองที่ต้องการยกเลิก"})
+        }
+        res.json({ message: "ยกเลิกการจองสำเร็จ"})
+    })
 })
 
 app.listen(port,()=>{
