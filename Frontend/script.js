@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000/api/bookings';
+const API_BASE = 'http://localhost:3000/api/booking';
 
 document.addEventListener('DOMContentLoaded', fetchBookings);
 
@@ -36,10 +36,10 @@ function renderBookings(bookings) {
         div.className = 'booking-item';
         div.innerHTML = `
             <div style="display: flex; align-items: center; gap: 1rem;">
-                <div class="time-badge">${item.start}</div>
+                <div class="time-badge">${item.start_time}</div>
                 <div>
-                    <strong style="display:block; color: #1e293b;">${item.title}</strong>
-                    <span style="font-size: 0.8rem; color: #64748b;">ถึงเวลา ${item.end}</span>
+                    <strong style="display:block; color: #1e293b;">${item.room_id}</strong>
+                    <span style="font-size: 0.8rem; color: #64748b;">ถึงเวลา ${item.end_time}</span>
                 </div>
             </div>
             <button class="btn-delete" onclick="deleteBooking(${item.id})">
@@ -58,14 +58,14 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     const endInput = document.getElementById('endTime');
 
     if (startInput.value >= endInput.value) {
-        showStatus('เวลาเริ่มต้องน้อยกว่าเวลาสิ้นสุด', 'error');
+        showStatus('มีคนจองแล้วครับ', 'error');
         return;
     }
 
     const payload = {
-        title: titleInput.value,
-        start: startInput.value,
-        end: endInput.value
+        room_id: titleInput.value,
+        start_time: startInput.value,
+        end_time: endInput.value
     };
 
     try {

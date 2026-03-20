@@ -27,7 +27,8 @@ app.post('/api/booking',(req,res)=>{
     const checkSql = `
       SELECT * FROM bookings
       WHERE room_id = ?
-      AND (start_time < ? AND end_time > ?)
+      AND (STR_TO_DATE(start_time, '%h:%i %p') < STR_TO_DATE(?, '%h:%i %p') 
+     AND STR_TO_DATE(end_time, '%h:%i %p') > STR_TO_DATE(?, '%h:%i %p'))
       `;
     db.query(checkSql,[room_id,end_time,start_time],(err,results) => {
         if (err) return res.status(500).json({error: err.message})
